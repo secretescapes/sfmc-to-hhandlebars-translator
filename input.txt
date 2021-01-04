@@ -1,0 +1,288 @@
+<!-- %%[
+  Set @applicationname = attributevalue('APPLICATIONNAME')
+  Set @domain = attributevalue('DOMAIN')
+  Set @headerlogo = attributevalue('HEADERLOGO')
+  Set @supportemail = attributevalue('SUPPORTEMAIL')
+  Set @supportnumber = attributevalue('SUPPORTNUMBER')
+  Set @email = attributevalue('EMAIL')
+  Set @territory = attributevalue('territory')
+  Set @googlenow = attributevalue('GOOGLENOW')
+  Set @voucherValue = attributevalue('VOUCHERVALUE')
+  Set @expiresOn = attributevalue('EXPIRESON')
+  Set @voucherCode = attributevalue('VOUCHERCODE')
+  Set @pdfLink = attributevalue('PDFLINK')
+
+  /* Auth login variables ....................................................... */
+  Set @now = FormatDate(Now(), "YYYY-MM-DD", "", "en-US")
+  Set @authToken = concat(Base64Encode(@email), "..", @now)
+  Set @encData=EncryptSymmetric(@authToken, "des;mode=ecb;padding=pkcs7", 'EmailEncryptionKey', @null, @null, @null, @null, @null)
+  Set @encData = replace(@encData, "+", "-")
+  Set @encData = replace(@encData, "/", "_")
+
+  /* Google variables ....................................................... */
+  Set @gaMedium = "email"
+  Set @gaSource = "api"
+  Set @gaCampaign = jobid
+  Set @gaContent = _DataSourceName
+  Set @gaString = concat("auth=", @encData, "&affiliate=", @urlstring, "&noPasswordSignIn=true", "&utm_medium=", @gaMedium, "&utm_source=", @gaSource, "&utm_campaign=", @gaCampaign, "&utm_content=", @gaContent)
+
+  /* URL variables  ....................................................... */
+  Set @currentSalesUrl = Concat("https://", @domain, "/current-sales?", @gaString)
+
+  /* ......................... Send Logging Variables ................................... */
+  Set @eventId = attributevalue('eventId')
+  Set @requestId = attributevalue('requestId')
+  Set @requestTimestamp= attributevalue('requestTimestamp')
+
+/*Insert Variables in a Test DE*/
+    InsertDE("ent.COLLECT_VAR_GIFT_CARD",
+    "APPLICATIONNAME",@applicationname,
+    "DOMAIN",@domain,
+    "HEADERLOGO",@headerlogo,
+    "SUPPORTEMAIL",@supportemail,
+    "SUPPORTNUMBER",@supportnumber,
+    "EMAIL",@email,
+    "territory",@territory,
+    "GOOGLENOW",@googlenow,
+    "VOUCHERVALUE",@voucherValue,
+    "EXPIRESON",@expiresOn,
+    "VOUCHERCODE",@voucherValue,
+    "PDFLINK",@pdfLink
+    )
+
+]%% -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>%%=v(@applicationname)=%%</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta http-equiv="Content-Style-Type" content="text/css"/>
+    <!--  Centered in Hotmail-->
+    <style type="text/css">
+      .ReadMsgBody {
+      width: 100%
+      }
+      .ExternalClass {
+      width: 100%;
+      line-height: 100%;
+      }
+      .ExternalClass #main-header {
+      margin-top: 10px;
+      }
+      /***************************************************
+      ****************************************************
+      MOBILE TARGETING
+      */
+      @media only screen and (max-device-width: 480px) {
+      body {
+      background-color: #ffffff;
+      }
+      body[class=media]  td[class=whiteColor] {
+      background-color: #ffffff!important;
+      }
+      body[class=media]  tr[class=nav] {
+      display: none;
+      }
+      body[class=media] td[class=lessPadding] {
+      padding-left: 5px!important;
+      }
+      body[class=media]  td[class=social], body[class=media]  td[class=description],body[class=media]  table[class=featured] {
+      display: none;
+      }
+      body[class=media]  table[id=container], body[class=media] table[id=header], body[class=media] table[class=footer],  body[class=media] table[class=mainHeader] {
+      width: 320px!important;
+      }
+      body[class=media]  img[class=saleImage], body[class=media]  table[class=excellentFor] {
+      width: 320px!important;
+      }
+      body[class=media]  img[class=headerImage] {
+      padding-top:0px!important;
+      }
+      body[class=media]  td[class=headerTable] {
+      text-align:center!important;
+      }
+      body[class=media]  td[class=headerTable] img {
+      margin:auto!important;
+      }
+      body[class=media]  table[class=excellentFor] {
+      margin-left:0px!important;
+      padding-left: 10px!important;
+      }
+      body[class=media]  table[class=saleDetails]  {
+      width: 313px!important;
+      }
+      body[class=media]  td[class=imageHeight] {
+      height: auto!important;
+      }
+      body[class=media] table[class="button"] {
+      width: 108px!important;
+      padding-left: 11px!important;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-right: 3px;
+      }
+      body[class=media] span[class="hideMobile"] {
+      display: none;
+      }
+      body[class=media] em[class="endsIn"] {
+      display: block;
+      }
+      body[class=media] span[class="reminder"] {
+      display: none;
+      }
+      body[class=media] td[class="preHeader"] {
+      font-size: 10px!important;
+      -webkit-text-size-adjust:none;
+      }
+      body[class=media] td[class="preHeader"] {
+      font-size: 10px!important;
+      -webkit-text-size-adjust:none;
+      }
+      body[class=media] td[class="impulseButton"], body[class=media] td[class="viewSalesButton"] {
+      display:none;
+      }
+      body[class=media] img {
+      max-width: 320px;
+      }
+      body[class=media] p[class=mainTitle] {
+      font-size: 26px!important;
+      }
+      }
+      /* More Specific Targeting */
+      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+      /* ipad (tablets, smaller screens, etc) */
+      body[class=media]  tr[class=nav], body[class=media]  td[class=social] {
+      display: none;
+      }
+      body[class=media] table[class="button"] {
+      width: 108px!important;
+      padding-left: 11px!important;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-right: 3px;
+      }
+      }
+      @media only screen and (-webkit-min-device-pixel-ratio: 2) {
+      /*iPhone 4g styles in here */
+      }
+      /***************************************************
+      ****************************************************
+      END MOBILE TARGETING
+      */
+    </style>
+    <style type="text/css">
+      .nav a {
+      text-decoration: none;
+      color: #000000;
+      }
+      a:visited, a:hover {
+      text-decoration: none;
+      color: #000000;
+      }
+    </style>
+  </head>
+  <body class="media" align="center" bgcolor="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="width:95%">
+    <table id="main-table" align="center" bgcolor="#000000" cellpadding="0" cellspacing="0" width="95%">
+      <tr>
+        <td class="whiteColor" bgcolor="#000000">
+          <table id="second-table" align="center" bgcolor="#000000" cellpadding="0" cellspacing="0" width="95%">
+            <tr>
+              <td class="whiteColor" bgcolor="#000000">
+                <table align="center" bgcolor="#ffffff" cellpadding="0" cellspacing="0" id="container" style="overflow: hidden;" width="580">
+                  <tr>
+                    <td class="description" align="center" style="background:#000000; color:#898989; padding:10px; font-family: Arial,Helvetica, sans-serif; font-size: 12px; " valign="top">
+                      Thank you for buying a voucher on %%=v(@applicationname)=%%
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <table cellpadding="0" cellspacing="0" id="header" width="550" border="0">
+                        <tr>
+                          <td >
+                            <table class="mainHeader" width="550" cellspacing="0" cellpadding="0" align="center">
+                              <tbody>
+                                <tr>
+                                  <td class="headerTable" align="left" style="margin-left:0px; margin-top:0px;">
+                                    <a href="%%=RedirectTo(@currentSalesUrl)=%%">
+                                    <img class="headerImage" style="border:none; padding-left: 0px; padding-top:10px;" alt="%%=v(@applicationname)=%%" src="%%=v(@headerlogo)=%%" />
+                                    </a>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center" style="padding-left: 0px; padding-bottom: 10px; padding-top:15px;">
+                      <table width="555" cellspacing="0" cellpadding="0" class="saleDetails">
+                        <tbody>
+                          <tr>
+                            <td bgcolor="#eeeeee" align="center" style="padding-left: 0px; padding-top:5px; text-align:left">
+                              <table width="520" class="saleDetails">
+                                <tbody>
+                                  <tr>
+                                    <td class="lessPadding" style="text-align:left; padding-left: 10px; font-family: Georgia,'Times New Roman',Times,serif; font-size:13px;">
+                                      <p style="font-size:13px">
+                                        <strong> This email has been automatically generated. Please do not reply to this address</strong>.
+                                      </p>
+                                      <p class="mainTitle" style="font-size:26px"><strong>Here’s your gift voucher!</strong></p>
+                                      <p style="font-size:13px">
+                                      Thanks again for choosing to buy gift credit to put towards a holiday with Secret Escapes. This credit will be valid for 12 months (exact date - %%=v(@expiresOn)=%%), and can be used to buy any of the luxury hotels or holidays on flash sale with Secret Escapes.
+                                      <br/><br/>
+                                      The gift voucher is available as a pdf, and instructions on how to redeem the voucher are on there, so all you need do it send this to the lucky recipient, and expect a massive thank you in return.
+                                      <br/><br/>
+                                      If you have purchased a presentation gift card, they will be delivered within five working days of purchase via Royal Mail 48.
+                                      <br/><br/>
+                                      <div align="center" style="padding-top:10px;padding-bottom:10px;margin-top:10px;margin-bottom:10px">
+                                        <a href="%%=RedirectTo(@pdfLink)=%%" style="background-color:#ff8c00;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:15px;line-height:35px;text-align:center;text-decoration:none;width:180px" target="_blank">DOWNLOAD VOUCHER</a>
+                                      </div>
+                                      If you have any problems redeeming your voucher, you can contact our customer support team by submitting your request on our <a href="https://www.secretescapes.com/contact" target="_blank">contact us page</a>.
+                                      </p>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="font-family: Georgia,'Times New Roman',Times,serif; font-size: 14px; padding-top:10px; padding-left:15px; padding-right:10px; padding-bottom:20px;text-align:left;">
+                      <p style="margin-bottom:0;">
+                        Thanks again, and happy travels!
+                      </p>
+                      <p style="font-family: Georgia,'Times New Roman',Times,serif; font-size:18px; margin-bottom:0px;margin-top:10px">%%=v(@applicationname)=%%</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="whiteColor" align="left">
+                      <table style="background:#000000;" cellpadding="0" cellspacing="0" class="footer" width="580">
+                        <tr>
+                          <td class="whiteColor" align="left" style="font-family: Arial,Helvetica, sans-serif; font-size:11px; color:#898989;">
+                            <p>
+                              This email was sent to %%=v(@email)=%%
+                              <br/><br/>
+                              Secret Escapes Ltd a company registered in England & Wales under number 07026107, registered office 120 Holborn, London, EC1N 2TD.
+                              <br/><br/>
+                              © Secret Escapes %%=DatePart(Now(),'year')=%%
+                            </p>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <custom name="opencounter" type="tracking">
+  </body>
+</html>

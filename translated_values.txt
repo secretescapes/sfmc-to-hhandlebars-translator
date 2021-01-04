@@ -1,0 +1,216 @@
+<title>%%=v(@applicationname)=%%</title>  >>>>  <title>{{applicationname}}</title>
+
+<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+
+<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+
+<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+
+<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+
+<!-- %%[ if not empty(@vccDetailsCss) then ]%% -->  >>>>  {{#if vccDetailsCss}}
+
+%%=v(@vccDetailsCss)=%%  >>>>  {{vccDetailsCss}}
+
+<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+
+%%=v(@applicationname)=%%  >>>>  {{applicationname}}
+
+href="%%=RedirectTo(@currentSalesUrl)=%%">  >>>>  href="{{currentSalesUrl}}">
+
+alt="%%=v(@applicationname)=%%"  >>>>  alt="{{applicationname}}"
+
+src="%%=v(@headerlogo)=%%"  >>>>  src="{{headerlogo}}"
+
+%%=v(@suppliercontactperson)=%%,</strong></p>  >>>>  {{suppliercontactperson}},</strong></p>
+
+<!-- %%[ if not empty(@cancellationCostType) then ]%% -->  >>>>  {{#if cancellationCostType}}
+
+<!--   %%[ endif ]%% -->  >>>>  {{/if}}
+
+<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+
+<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+
+<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+
+<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+
+<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+
+%%=v(@transactionid)=%%  >>>>  {{transactionid}}
+
+<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+
+<!-- %%[ if not empty(@cancellationCostType) then ]%% -->  >>>>  {{#if cancellationCostType}}
+
+<!--   %%[ endif ]%% -->  >>>>  {{/if}}
+
+%%=v(@customeremailaddress)=%%<br  >>>>  {{customeremailaddress}}<br
+
+%%=v(@firstname)=%%  >>>>  {{firstname}}
+
+%%=v(@surname)=%%<br  >>>>  {{surname}}<br
+
+%%=v(@telephonenumber)=%%<br  >>>>  {{telephonenumber}}<br
+
+%%=v(@transactionid)=%%  >>>>  {{transactionid}}
+
+%%[ if @departingfrom != 'null' then ]%%  >>>>  {{#if departingfrom}}
+
+%%=v(@departingfrom)=%%<br  >>>>  {{departingfrom}}<br
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%=v(@hotelname)=%%  >>>>  {{hotelname}}
+
+%%[ if @hoteladdress1 != 'null' then ]%%  >>>>  {{#if hoteladdress1}}
+
+%%=v(@hoteladdress1)=%%<br  >>>>  {{hoteladdress1}}<br
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%[ if @hoteladdress2 != 'null' then ]%%  >>>>  {{#if hoteladdress2}}
+
+%%=v(@hoteladdress2)=%%<br  >>>>  {{hoteladdress2}}<br
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%[ if @hoteladdress3 != 'null' then ]%%  >>>>  {{#if hoteladdress3}}
+
+%%=v(@hoteladdress3)=%%<br  >>>>  {{hoteladdress3}}<br
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%[ if @hoteladdress4 != 'null' then ]%%  >>>>  {{#if hoteladdress4}}
+
+%%=v(@hoteladdress4)=%%<br  >>>>  {{hoteladdress4}}<br
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%[ if @hoteladdress5 != 'null' then ]%%  >>>>  {{#if hoteladdress5}}
+
+%%=v(@hoteladdress5)=%%<br  >>>>  {{hoteladdress5}}<br
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%[ if @hotelcountry != 'null' then ]%%  >>>>  {{#if hotelcountry}}
+
+%%=v(@hotelcountry)=%%<br  >>>>  {{hotelcountry}}<br
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%=v(@customersupportemail)=%%<br  >>>>  {{customersupportemail}}<br
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%=v(@customersupporttel)=%%<br  >>>>  {{customersupporttel}}<br
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+<!-- %%[ if not empty(@vccDetailsHtml) then ]%% -->  >>>>  {{#if vccDetailsHtml}}
+
+%%=v(@vccDetailsHtml)=%%  >>>>  {{vccDetailsHtml}}
+
+<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+
+%%=v(@vccCardNumber)=%%  >>>>  {{vccCardNumber}}
+
+%%=v(@vccExpireDate)=%%  >>>>  {{vccExpireDate}}
+
+%%=v(@vccCvvNumber)=%%  >>>>  {{vccCvvNumber}}
+
+%%=v(@vccActivationDate)=%%  >>>>  {{vccActivationDate}}
+
+%%=v(@vccAmount)=%%  >>>>  {{vccAmount}}
+
+%%=v(@vccOriginalCurrency)=%%  >>>>  {{vccOriginalCurrency}}
+
+<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+
+%%=v(@holidaystartdate)=%%  >>>>  {{holidaystartdate}}
+
+%%=v(@holidayenddate)=%%  >>>>  {{holidayenddate}}
+
+%%=v(@stayduration)=%%  >>>>  {{stayduration}}
+
+%%=v(@purchaseqty)=%%<br  >>>>  {{purchaseqty}}<br
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%[ if @flightdetails != 'null' then ]%%  >>>>  {{#if flightdetails}}
+
+<p>%%=v(@flightdetails)=%%</p>  >>>>  <p>{{flightdetails}}</p>
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%=v(@guestdetails)=%%<br  >>>>  {{guestdetails}}<br
+
+%%[if not empty(@travellerdetails) then]%%  >>>>  {{#if travellerdetails}}
+
+%%=v(@travellerdetails)=%%<br  >>>>  {{travellerdetails}}<br
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%[ if @customeraddress1 != 'null' then ]%%  >>>>  {{#if customeraddress1}}
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%[ if @customeraddress1 != 'null' then ]%%  >>>>  {{#if customeraddress1}}
+
+%%=v(@customeraddress1)=%%  >>>>  {{customeraddress1}}
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%[ if @customeraddress2 != 'null' then ]%%  >>>>  {{#if customeraddress2}}
+
+%%=v(@customeraddress2)=%%  >>>>  {{customeraddress2}}
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%[ if @customercity != 'null' then ]%%  >>>>  {{#if customercity}}
+
+%%=v(@customercity)=%%  >>>>  {{customercity}}
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%[ if @customercountry != 'null' then ]%%  >>>>  {{#if customercountry}}
+
+%%=v(@customercountry)=%%  >>>>  {{customercountry}}
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%[ if @customerpostcode != 'null' then ]%%  >>>>  {{#if customerpostcode}}
+
+%%=v(@customerpostcode)=%%  >>>>  {{customerpostcode}}
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%=v(@packageprice)=%%  >>>>  {{packageprice}}
+
+%%[ if @refundclause12 == 'true' then ]%%  >>>>  {{#if refundclause12}}
+
+%%=v(@refundclause12text)=%%  >>>>  {{refundclause12text}}
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%=v(@producttitle)=%%<br  >>>>  {{producttitle}}<br
+
+%%=v(@saledescription)=%%<br  >>>>  {{saledescription}}<br
+
+%%[ if @atolapplicable == 'true' then ]%%  >>>>  {{#if atolapplicable}}
+
+href="%%=RedirectTo(@atollink)=%%">View  >>>>  href="{{atollink}}">View
+
+%%[ endif ]%%  >>>>  {{/if}}
+
+%%=v(@support_email)=%%  >>>>  {{support_email}}
+
+%%=v(@support_number)=%%<br  >>>>  {{support_number}}<br
+
+%%=v(@email)=%%<br  >>>>  {{email}}<br
+

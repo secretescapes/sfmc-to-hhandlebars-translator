@@ -1,10 +1,14 @@
 import re
 from translator import Translator
 
+translated_file = open("translated_values.txt", "w")
+not_translated_file = open("not_translated.txt", "w")
+
 
 def translate():
     input_file_name = "input.txt"
     output_file_name = "output.txt"
+
     translator = Translator()
     with open(input_file_name) as inputFile, open(output_file_name, "w") as outputFile:
         for line in inputFile:
@@ -12,27 +16,32 @@ def translate():
             if translator.contains_sfmc_line(line) is True:
                 line = line.strip()
                 if is_if_condition(line) is True:
-                    variable, translated = translator.translate_if_condition(line)
-                    new_line = variable
-                    # if not translated. save to not translated file
+                    translation, translated = translator.translate_if_condition(line)
+                    new_line = translation
+                    # log to translated or not translated file
+                    log_translation(line, translation, translated)
                 else:
                     words = line.split()
                     new_line = ""
                     for word in words:
                         if is_sfmc_variable(word) is True:
-                            variable, translated = translator.translate_variables(word)
-                            # if not translated. save to not translated file
-                            new_line = new_line + " " + variable
+                            translation, translated = translator.translate_variables(word)
+                            # log to translated or not translated file
+                            log_translation(word, translation, translated)
+                            new_line = new_line + " " + translation
                         elif is_sfmc_redirect(word) is True:
-                            variable, translated = translator.translate_redirect(word)
-                            # if not translated. save to not translated file
-                            new_line = new_line + " " + variable
+                            translation, translated = translator.translate_redirect(word)
+                            # log to translated or not translated file
+                            log_translation(word, translation, translated)
+                            new_line = new_line + " " + translation
                         else:
                             new_line = new_line + " " + word
                 outputFile.write(indentation + new_line)
                 outputFile.write('\n')
             else:
                 outputFile.write(line)
+    translated_file.close()
+    not_translated_file.close()
 
 
 def has_simple_if_condition(if_condition):
@@ -64,3 +73,14 @@ def is_sfmc_variable(word):
 
 def is_sfmc_redirect(word):
     return "%%=RedirectTo" in word
+
+
+def log_translation(original, translation, is_translated):
+    if is_translated is True:
+        translated_file.write(original + "  >>>>  " + translation)
+        translated_file.write('\n')
+        translated_file.write('\n')
+    else:
+        not_translated_file.write(original + "  >>>>  " + translation)
+        not_translated_file.write('\n')
+        not_translated_file.write('\n')

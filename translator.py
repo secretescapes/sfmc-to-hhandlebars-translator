@@ -24,7 +24,7 @@ class Translator:
                 return new_line, True
             else:
                 return line, False
-        elif "endif" in line:
+        elif ''.join( line.split()) == "%%[endif]%%" or ''.join( line.split()) == "<!--%%[endif]%%-->":
             new_line = "{{/if}}"
             return new_line, True
         else:

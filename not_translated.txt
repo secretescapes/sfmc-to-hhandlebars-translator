@@ -1,0 +1,36 @@
+<!-- %%[ if not empty(@vccCardNumber) and @cancellationStatus == 'CHARGED' then ]%% -->  >>>>  <!-- %%[ if not empty(@vccCardNumber) and @cancellationStatus == 'CHARGED' then ]%% -->
+
+<!-- %%[ if not empty(@vccCardNumber) and @cancellationStatus == 'CANCELLED' and @cancellationCostType == 'SHARED_COST' then ]%% -->  >>>>  <!-- %%[ if not empty(@vccCardNumber) and @cancellationStatus == 'CANCELLED' and @cancellationCostType == 'SHARED_COST' then ]%% -->
+
+<!-- %%[ if not empty(@vccCardNumber) and  (@cancellationCostType == 'SE_COST' or @cancellationType == 'CANCELLATION') then ]%% -->  >>>>  <!-- %%[ if not empty(@vccCardNumber) and  (@cancellationCostType == 'SE_COST' or @cancellationType == 'CANCELLATION') then ]%% -->
+
+<!-- %%[ if not empty(@vccCardNumber) and  @cancellationStatus == 'CANCELLED' and @cancellationCostType == 'HOTEL_COST' then ]%% -->  >>>>  <!-- %%[ if not empty(@vccCardNumber) and  @cancellationStatus == 'CANCELLED' and @cancellationCostType == 'HOTEL_COST' then ]%% -->
+
+<!-- %%[ if @cancellationType == 'FULL' and @cancellationStatus == 'CHARGED' then ]%% -->  >>>>  <!-- %%[ if @cancellationType == 'FULL' and @cancellationStatus == 'CHARGED' then ]%% -->
+
+commission.%%[ endif ]%%</p>  >>>>  commission.%%[ endif ]%%</p>
+
+<!-- %%[ else ]%% -->  >>>>  <!-- %%[ else ]%% -->
+
+<!-- %%[ if @cancellationType == 'FULL' then ]%% -->  >>>>  <!-- %%[ if @cancellationType == 'FULL' then ]%% -->
+
+<!-- %%[ if @cancellationCostType == 'HOTEL_COST' or  @cancellationCostType == 'SHARED_COST' then ]%% -->  >>>>  <!-- %%[ if @cancellationCostType == 'HOTEL_COST' or  @cancellationCostType == 'SHARED_COST' then ]%% -->
+
+<!-- %%[ if @cancellationType == 'CANCELLATION' then ]%% -->  >>>>  <!-- %%[ if @cancellationType == 'CANCELLATION' then ]%% -->
+
+<!-- %%[ if @cancellationType == 'FULL' then]%% -->  >>>>  <!-- %%[ if @cancellationType == 'FULL' then]%% -->
+
+<!-- %%[ if @cancellationCostType == 'SE_COST' then ]%% -->  >>>>  <!-- %%[ if @cancellationCostType == 'SE_COST' then ]%% -->
+
+<!-- %%[ if @cancellationCostType == 'HOTEL_COST' then ]%% -->  >>>>  <!-- %%[ if @cancellationCostType == 'HOTEL_COST' then ]%% -->
+
+<!-- %%[ if @cancellationStatus != 'CHARGED' or  @cancellationType == 'CANCELLATION' then ]%% -->  >>>>  <!-- %%[ if @cancellationStatus != 'CHARGED' or  @cancellationType == 'CANCELLATION' then ]%% -->
+
+Payment Id: %%[ if @paymentid != 'null' then v(@paymentid) endif]%%<br />  >>>>  Payment Id: %%[ if @paymentid != 'null' then v(@paymentid) endif]%%<br />
+
+%%[ if @customersupporttel != 'null' and not empty(@customersupporttel) then ]%%  >>>>  %%[ if @customersupporttel != 'null' and not empty(@customersupporttel) then ]%%
+
+<!-- %%[ if (not empty(@vccCardNumber)) and (empty(@vccDetailsHtml)) then ]%% -->  >>>>  <!-- %%[ if (not empty(@vccCardNumber)) and (empty(@vccDetailsHtml)) then ]%% -->
+
+%%[if empty(@flightdetails) then]%%  >>>>  %%[if empty(@flightdetails) then]%%
+

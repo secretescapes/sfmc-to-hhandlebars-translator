@@ -1,136 +1,66 @@
 <title>%%=v(@applicationname)=%%</title>  >>>>  <title>{{applicationname}}</title>
 
-<!-- %%[ endif ]%% -->  >>>>  {{/if}}
-
-<!-- %%[ endif ]%% -->  >>>>  {{/if}}
-
-<!-- %%[ endif ]%% -->  >>>>  {{/if}}
-
-<!-- %%[ endif ]%% -->  >>>>  {{/if}}
-
-<!-- %%[ if not empty(@vccDetailsCss) then ]%% -->  >>>>  {{#if vccDetailsCss}}
-
-%%=v(@vccDetailsCss)=%%  >>>>  {{vccDetailsCss}}
-
-<!-- %%[ endif ]%% -->  >>>>  {{/if}}
-
-%%=v(@applicationname)=%%  >>>>  {{applicationname}}
-
-href="%%=RedirectTo(@currentSalesUrl)=%%">  >>>>  href="{{currentSalesUrl}}">
+href="%%=RedirectTo(@changeCurrentSalesUrl)=%%">  >>>>  href="{{changeCurrentSalesUrl}}">
 
 alt="%%=v(@applicationname)=%%"  >>>>  alt="{{applicationname}}"
 
 src="%%=v(@headerlogo)=%%"  >>>>  src="{{headerlogo}}"
 
-%%=v(@suppliercontactperson)=%%,</strong></p>  >>>>  {{suppliercontactperson}},</strong></p>
+%%=v(@applicationname)=%%.  >>>>  {{applicationname}}.
 
-<!-- %%[ if not empty(@cancellationCostType) then ]%% -->  >>>>  {{#if cancellationCostType}}
+%%=v(@saleenddate)=%%  >>>>  {{saleenddate}}
 
-<!--   %%[ endif ]%% -->  >>>>  {{/if}}
+%%=v(@applicationname)=%%  >>>>  {{applicationname}}
 
-<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+href="%%=RedirectTo(@completeHoldUrl)=%%"  >>>>  href="{{completeHoldUrl}}"
 
-<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+background:%%=v(@salecalltoactiontextcolor)=%%;  >>>>  background:{{salecalltoactiontextcolor}};
 
-<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+%%=v(@salebuttontextcolor)=%%;  >>>>  {{salebuttontextcolor}};
 
-<!-- %%[ endif ]%% -->  >>>>  {{/if}}
-
-%%[ endif ]%%  >>>>  {{/if}}
-
-<!-- %%[ endif ]%% -->  >>>>  {{/if}}
-
-<!-- %%[ endif ]%% -->  >>>>  {{/if}}
-
-%%=v(@transactionid)=%%  >>>>  {{transactionid}}
-
-<!-- %%[ endif ]%% -->  >>>>  {{/if}}
-
-<!-- %%[ if not empty(@cancellationCostType) then ]%% -->  >>>>  {{#if cancellationCostType}}
-
-<!--   %%[ endif ]%% -->  >>>>  {{/if}}
-
-%%=v(@customeremailaddress)=%%<br  >>>>  {{customeremailaddress}}<br
+%%=v(@email)=%%<br/>  >>>>  {{email}}<br/>
 
 %%=v(@firstname)=%%  >>>>  {{firstname}}
 
-%%=v(@surname)=%%<br  >>>>  {{surname}}<br
+%%=v(@surname)=%%<br/>  >>>>  {{surname}}<br/>
 
-%%=v(@telephonenumber)=%%<br  >>>>  {{telephonenumber}}<br
+%%[ if @telephonenumber != 'null' then ]%%  >>>>  {{#if telephonenumber}}
+
+%%=v(@telephonenumber)=%%<br/>  >>>>  {{telephonenumber}}<br/>
+
+%%[ endif ]%%  >>>>  {{/if}}
 
 %%=v(@transactionid)=%%  >>>>  {{transactionid}}
 
+%%[ if @paymentid != 'null' then ]%%  >>>>  {{#if paymentid}}
+
+%%=v(@paymentid)=%%<br/>  >>>>  {{paymentid}}<br/>
+
+%%[ endif ]%%  >>>>  {{/if}}
+
 %%[ if @departingfrom != 'null' then ]%%  >>>>  {{#if departingfrom}}
 
-%%=v(@departingfrom)=%%<br  >>>>  {{departingfrom}}<br
+%%=v(@departingfrom)=%%<br/>  >>>>  {{departingfrom}}<br/>
 
 %%[ endif ]%%  >>>>  {{/if}}
 
 %%=v(@hotelname)=%%  >>>>  {{hotelname}}
 
-%%[ if @hoteladdress1 != 'null' then ]%%  >>>>  {{#if hoteladdress1}}
+%%=v(@hoteladdress)=%%<br/>  >>>>  {{hoteladdress}}<br/>
 
-%%=v(@hoteladdress1)=%%<br  >>>>  {{hoteladdress1}}<br
+%%[ if @customersupportemail != 'null' then ]%%  >>>>  {{#if customersupportemail}}
 
-%%[ endif ]%%  >>>>  {{/if}}
-
-%%[ if @hoteladdress2 != 'null' then ]%%  >>>>  {{#if hoteladdress2}}
-
-%%=v(@hoteladdress2)=%%<br  >>>>  {{hoteladdress2}}<br
+%%=v(@customersupportemail)=%%  >>>>  {{customersupportemail}}
 
 %%[ endif ]%%  >>>>  {{/if}}
 
-%%[ if @hoteladdress3 != 'null' then ]%%  >>>>  {{#if hoteladdress3}}
+%%[ if @customersupporttel != 'null' then ]%%  >>>>  {{#if customersupporttel}}
 
-%%=v(@hoteladdress3)=%%<br  >>>>  {{hoteladdress3}}<br
-
-%%[ endif ]%%  >>>>  {{/if}}
-
-%%[ if @hoteladdress4 != 'null' then ]%%  >>>>  {{#if hoteladdress4}}
-
-%%=v(@hoteladdress4)=%%<br  >>>>  {{hoteladdress4}}<br
+%%=v(@customersupporttel)=%%  >>>>  {{customersupporttel}}
 
 %%[ endif ]%%  >>>>  {{/if}}
 
-%%[ if @hoteladdress5 != 'null' then ]%%  >>>>  {{#if hoteladdress5}}
-
-%%=v(@hoteladdress5)=%%<br  >>>>  {{hoteladdress5}}<br
-
-%%[ endif ]%%  >>>>  {{/if}}
-
-%%[ if @hotelcountry != 'null' then ]%%  >>>>  {{#if hotelcountry}}
-
-%%=v(@hotelcountry)=%%<br  >>>>  {{hotelcountry}}<br
-
-%%[ endif ]%%  >>>>  {{/if}}
-
-%%=v(@customersupportemail)=%%<br  >>>>  {{customersupportemail}}<br
-
-%%[ endif ]%%  >>>>  {{/if}}
-
-%%=v(@customersupporttel)=%%<br  >>>>  {{customersupporttel}}<br
-
-%%[ endif ]%%  >>>>  {{/if}}
-
-<!-- %%[ if not empty(@vccDetailsHtml) then ]%% -->  >>>>  {{#if vccDetailsHtml}}
-
-%%=v(@vccDetailsHtml)=%%  >>>>  {{vccDetailsHtml}}
-
-<!-- %%[ endif ]%% -->  >>>>  {{/if}}
-
-%%=v(@vccCardNumber)=%%  >>>>  {{vccCardNumber}}
-
-%%=v(@vccExpireDate)=%%  >>>>  {{vccExpireDate}}
-
-%%=v(@vccCvvNumber)=%%  >>>>  {{vccCvvNumber}}
-
-%%=v(@vccActivationDate)=%%  >>>>  {{vccActivationDate}}
-
-%%=v(@vccAmount)=%%  >>>>  {{vccAmount}}
-
-%%=v(@vccOriginalCurrency)=%%  >>>>  {{vccOriginalCurrency}}
-
-<!-- %%[ endif ]%% -->  >>>>  {{/if}}
+%%=v(@flightdetails)=%%  >>>>  {{flightdetails}}
 
 %%=v(@holidaystartdate)=%%  >>>>  {{holidaystartdate}}
 
@@ -138,69 +68,35 @@ src="%%=v(@headerlogo)=%%"  >>>>  src="{{headerlogo}}"
 
 %%=v(@stayduration)=%%  >>>>  {{stayduration}}
 
-%%=v(@purchaseqty)=%%<br  >>>>  {{purchaseqty}}<br
+%%=v(@purchaseqty)=%%<br/>  >>>>  {{purchaseqty}}<br/>
 
 %%[ endif ]%%  >>>>  {{/if}}
 
-%%[ if @flightdetails != 'null' then ]%%  >>>>  {{#if flightdetails}}
-
-<p>%%=v(@flightdetails)=%%</p>  >>>>  <p>{{flightdetails}}</p>
+%%=v(@guestdetails)=%%<br/>  >>>>  {{guestdetails}}<br/>
 
 %%[ endif ]%%  >>>>  {{/if}}
-
-%%=v(@guestdetails)=%%<br  >>>>  {{guestdetails}}<br
 
 %%[if not empty(@travellerdetails) then]%%  >>>>  {{#if travellerdetails}}
 
-%%=v(@travellerdetails)=%%<br  >>>>  {{travellerdetails}}<br
+%%=v(@travellerdetails)=%%<br/>  >>>>  {{travellerdetails}}<br/>
 
 %%[ endif ]%%  >>>>  {{/if}}
 
-%%[ if @customeraddress1 != 'null' then ]%%  >>>>  {{#if customeraddress1}}
+%%=v(@postaladdress)=%%<br/>  >>>>  {{postaladdress}}<br/>
 
 %%[ endif ]%%  >>>>  {{/if}}
 
-%%[ if @customeraddress1 != 'null' then ]%%  >>>>  {{#if customeraddress1}}
-
-%%=v(@customeraddress1)=%%  >>>>  {{customeraddress1}}
+%%=v(@packageprice)=%%<br/>  >>>>  {{packageprice}}<br/>
 
 %%[ endif ]%%  >>>>  {{/if}}
 
-%%[ if @customeraddress2 != 'null' then ]%%  >>>>  {{#if customeraddress2}}
+%%=v(@producttitle)=%%<br/>  >>>>  {{producttitle}}<br/>
 
-%%=v(@customeraddress2)=%%  >>>>  {{customeraddress2}}
+%%=v(@offersummary)=%%<br/>  >>>>  {{offersummary}}<br/>
 
-%%[ endif ]%%  >>>>  {{/if}}
+%%=v(@saledescription)=%%<br/>  >>>>  {{saledescription}}<br/>
 
-%%[ if @customercity != 'null' then ]%%  >>>>  {{#if customercity}}
-
-%%=v(@customercity)=%%  >>>>  {{customercity}}
-
-%%[ endif ]%%  >>>>  {{/if}}
-
-%%[ if @customercountry != 'null' then ]%%  >>>>  {{#if customercountry}}
-
-%%=v(@customercountry)=%%  >>>>  {{customercountry}}
-
-%%[ endif ]%%  >>>>  {{/if}}
-
-%%[ if @customerpostcode != 'null' then ]%%  >>>>  {{#if customerpostcode}}
-
-%%=v(@customerpostcode)=%%  >>>>  {{customerpostcode}}
-
-%%[ endif ]%%  >>>>  {{/if}}
-
-%%=v(@packageprice)=%%  >>>>  {{packageprice}}
-
-%%[ if @refundclause12 == 'true' then ]%%  >>>>  {{#if refundclause12}}
-
-%%=v(@refundclause12text)=%%  >>>>  {{refundclause12text}}
-
-%%[ endif ]%%  >>>>  {{/if}}
-
-%%=v(@producttitle)=%%<br  >>>>  {{producttitle}}<br
-
-%%=v(@saledescription)=%%<br  >>>>  {{saledescription}}<br
+%%=v(@packagediscount)=%%<br/>  >>>>  {{packagediscount}}<br/>
 
 %%[ if @atolapplicable == 'true' then ]%%  >>>>  {{#if atolapplicable}}
 
@@ -208,9 +104,23 @@ href="%%=RedirectTo(@atollink)=%%">View  >>>>  href="{{atollink}}">View
 
 %%[ endif ]%%  >>>>  {{/if}}
 
-%%=v(@support_email)=%%  >>>>  {{support_email}}
+href="mailto:%%=v(@supportemail)=%%"  >>>>  href="mailto:{{supportemail}}"
 
-%%=v(@support_number)=%%<br  >>>>  {{support_number}}<br
+target="_blank">%%=v(@supportemail)=%%</a><br/>  >>>>  target="_blank">{{supportemail}}</a><br/>
 
-%%=v(@email)=%%<br  >>>>  {{email}}<br
+%%=v(@applicationname)=%%  >>>>  {{applicationname}}
+
+href="mailto:%%=v(@supportemail)=%%"  >>>>  href="mailto:{{supportemail}}"
+
+target="_blank">%%=v(@supportemail)=%%</a>)  >>>>  target="_blank">{{supportemail}}</a>)
+
+%%=v(@applicationname)=%%.  >>>>  {{applicationname}}.
+
+href="mailto:%%=v(@supportemail)=%%"  >>>>  href="mailto:{{supportemail}}"
+
+target="_blank">%%=v(@supportemail)=%%</a>  >>>>  target="_blank">{{supportemail}}</a>
+
+%%=v(@supportnumber)=%%<br/>  >>>>  {{supportnumber}}<br/>
+
+%%=v(@email)=%%<br/>  >>>>  {{email}}<br/>
 

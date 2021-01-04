@@ -24,7 +24,10 @@ class Translator:
                 return new_line, True
             else:
                 return line, False
-        elif ''.join( line.split()) == "%%[endif]%%" or ''.join( line.split()) == "<!--%%[endif]%%-->":
+
+        # Sometimes some %%[endif]%% are in the same line as other text.
+        # This ''.join( line.split()) removes all spaces and checks that this is the only word in the line
+        elif ''.join(line.split()) == "%%[endif]%%" or ''.join(line.split()) == "<!--%%[endif]%%-->":
             new_line = "{{/if}}"
             return new_line, True
         else:
@@ -67,6 +70,7 @@ class Translator:
         return if_condition.group(1)
 
     def __has_simple_if_condition(self, if_condition):
+        if_condition = if_condition.split()
         return "if" in if_condition and \
                ("and" not in if_condition and "or" not in if_condition and "endif" not in if_condition)
 

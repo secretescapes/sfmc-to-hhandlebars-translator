@@ -1,691 +1,282 @@
- <!-- %%[
-  Set @applicationname = attributevalue('APPLICATIONNAME')
-  Set @domain = attributevalue('DOMAIN')
-  Set @headerlogo = attributevalue('HEADERLOGO')
-  Set @transactionid = attributevalue('TRANSACTIONID')
-  Set @firstname = attributevalue('FIRSTNAME')
-  Set @email = attributevalue('EMAIL')
-  Set @reference = attributevalue('REFERENCE')
-  Set @surname = attributevalue('SURNAME')
-  Set @telephonenumber = attributevalue('TELEPHONENUMBER')
-  Set @paymentid = attributevalue('PAYMENTID')
-  Set @hotelname = attributevalue('HOTELNAME')
-  Set @holidaystartdate = attributevalue('HOLIDAYSTARTDATE')
-  Set @holidayenddate = attributevalue('HOLIDAYENDDATE')
-  Set @stayduration = attributevalue('STAYDURATION')
-  Set @purchaseqty = attributevalue('PURCHASEQTY')
-  Set @producttitle = attributevalue('PRODUCTTITLE')
-  Set @saledescription = attributevalue('SALEDESCRIPTION')
-  Set @supportemail = attributevalue('SUPPORTEMAIL')
-  Set @supportnumber = attributevalue('SUPPORTNUMBER')
-  Set @departingfrom = attributevalue('DEPARTINGFROM')
-  Set @packagediscount = attributevalue('PACKAGEDISCOUNT')
-  Set @travellerdetails = attributevalue('TRAVELLERDETAILS')
-  Set @guestdetails = attributevalue('GUESTDETAILS')
-  Set @customersupporttel = attributevalue('CSUTOMERSUPPORTTEL')
-  Set @customersupportemail = attributevalue('CSUTOMERSUPPORTEMAIL')
-  Set @resendnotice = attributevalue('RESENDNOTICE')
-  Set @roomtype= attributevalue('ROOMTYPE')
-  Set @ratecode= attributevalue('RATECODE')
-  Set @atolapplicable = attributevalue('ATOLAPPLICABLE')
-  Set @packageintro = attributevalue('PACKAGEINTRO')
-  Set @packageprice = attributevalue('PACKAGEPRICE')
-  Set @departingfrom = attributevalue('DEPARTINGFROM')
-  Set @packagediscount = attributevalue('PACKAGEDISCOUNT')
-  Set @guestdetails = attributevalue('guestdetails')
-  Set @flightdetails = attributevalue('FLIGHTDETAILS')
-  Set @travellerdetails = attributevalue('TRAVELLERDETAILS')
-  Set @footersummary = attributevalue('FOOTERSUMMARY')
-  Set @atollink = attributevalue('ATOLLINK')
-  Set @suppliergreeting = attributevalue('SUPPLIERGREETING')
-  Set @hoteladdress1 = attributevalue('HOTELADDRESS1')
-  Set @hoteladdress2 = attributevalue('HOTELADDRESS2')
-  Set @hoteladdress3 = attributevalue('HOTELADDRESS3')
-  Set @hoteladdress4 = attributevalue('HOTELADDRESS4')
-  Set @hoteladdress5 = attributevalue('HOTELADDRESS5')
-  Set @hotelcountry = attributevalue('HOTELCOUNTRY')
-  Set @customeraddress1 = attributevalue('CUSTOMERADDRESS1')
-  Set @customeraddress2 = attributevalue('CUSTOMERADDRESS2')
-  Set @customercity = attributevalue('CUSTOMERCITY')
-  Set @customercountry = attributevalue('CUSTOMERCOUNTRY')
-  Set @customerpostcode = attributevalue('CUSTOMERPOSTCODE')
-  Set @suppliercontactperson= attributevalue('SUPPLIERCONTACTPERSON')
-  Set @customeremailaddress = attributevalue('CUSTOMEREMAILADDRESS')
-  Set @refundclause12text = attributevalue('REFUNDCLAUSE12TEXT')
-  Set @refundclause12 = attributevalue('REFUNDCLAUSE12')
 
 
-  /* Auth login variables ....................................................... */
-  Set @now = FormatDate(Now(), "YYYY-MM-DD", "", "en-US")
-  Set @authToken = concat(Base64Encode(@email), "..", @now)
-  Set @encData=EncryptSymmetric(@authToken, "des;mode=ecb;padding=pkcs7", 'StagingEmailEncryptionKey', @null, @null, @null, @null, @null)
-  Set @encData = replace(@encData, "+", "-")
-  Set @encData = replace(@encData, "/", "_")
-
-  /* Google variables ....................................................... */
-  Set @gaMedium = "email"
-  Set @gaSource = "api"
-  Set @gaCampaign = jobid
-  Set @gaContent = _DataSourceName
-  Set @gaString = concat("auth=", @encData, "&affiliate=", @urlstring, "&noPasswordSignIn=true", "&utm_medium=", @gaMedium, "&utm_source=", @gaSource, "&utm_campaign=", @gaCampaign, "&utm_content=", @gaContent)
-
-  /* URL variables  ....................................................... */
-  Set @currentSalesUrl = Concat("https://", @domain, "/current-sales?", @gaString)
-
-  /* ......................... Send Logging Variables ................................... */
-  Set @eventId = attributevalue('eventId')
-  Set @requestId = attributevalue('requestId')
-  Set @requestTimestamp= attributevalue('requestTimestamp')
-
-  /* Virtual Credit Card variables ....................................................... */
-  Set @vccCardNumber = attributevalue('cardNumber')
-  Set @vccExpireDate = attributevalue('expireDate')
-  Set @vccCvvNumber = attributevalue('cvvNumber')
-  Set @vccActivationDate = attributevalue('activationDate')
-  Set @vccAmount = attributevalue('amount')
-  Set @vccOriginalCurrency = attributevalue('originalCurrency')
-  Set @vccDetailsHtml = attributevalue('vccDetailsHtml')
-  Set @vccDetailsCss = attributevalue('vccDetailsCss')
-
-  /* Cancellation cost type (SHARED_COST | SE_COST | HOTEL_COST) ********************/
-  Set @cancellationCostType = attributevalue('cancellationCostType')
-
-  /* Cancellation status (CANCELLED | CHARGED) ********************/
-  Set @cancellationStatus = attributevalue('cancellationStatus')
-  /* Cacnellation refund type type, i.e CANCELLATION, REFUND etc. */
-  Set @cancellationType = attributevalue('cancellationType')
-
-
-  /* Attached File  ....................................................... */
-  if @refundclause12 == 'true' Then
-    AttachFile("HTTP","https://s3.amazonaws.com/static.secretescapes.com/Emails/contractClause12/bankAccounts.png",'Bank_Accounts.png')
-  EndIf
-]%% -->
-<!DOCTYPE HTML
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-
-<head>
-   <title>{{applicationname}}</title>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <meta http-equiv="Content-Style-Type" content="text/css" />
-  <!--  Centered in Hotmail-->
-  <style type="text/css">
-    .ReadMsgBody {
-      width: 100%
-    }
-
-    .ExternalClass {
-      width: 100%;
-      line-height: 100%;
-    }
-
-    .ExternalClass #main-header {
-      margin-top: 10px;
-    }
-
-    /***************************************************
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml">
+  <head>
+    <meta https-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+     <title>{{applicationname}}</title>
+    <style type="text/css">
+      /* Client-specific Styles */
+      #outlook a {padding:0;} /* Force Outlook to provide a "view in browser" menu link. */
+      body{width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; margin:0; padding:0;}
+      /* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not breaking desktop design. */
+      .ExternalClass {width:100%;} /* Force Hotmail to display emails at full width */
+      .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;} /* Force Hotmail to display normal line spacing.  */
+      #backgroundTable {margin:0; padding:0; width:100% !important; line-height: 100% !important;}
+      img {outline:none; text-decoration:none; -ms-interpolation-mode: bicubic;}
+      a img {border:none;}
+      .image_fix {display:block;}
+      p {margin: 1em 0;}
+      table td {border-collapse: collapse;}
+      table { border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; }
+      /***************************************************
       ****************************************************
       MOBILE TARGETING
       */
-    @media only screen and (max-device-width: 480px) {
-      body {
-        background-color: #ffffff;
-      }
-
-      body[class=media] td[class=whiteColor] {
-        background-color: #ffffff !important;
-      }
-
-      body[class=media] tr[class=nav] {
-        display: none;
-      }
-
-      body[class=media] td[class=lessPadding] {
-        padding-left: 5px !important;
-      }
-
-      body[class=media] td[class=social],
-      body[class=media] td[class=description],
-      body[class=media] table[class=featured] {
-        display: none;
-      }
-
-      body[class=media] table[id=container],
-      body[class=media] table[id=header],
-      body[class=media] table[class=footer],
-      body[class=media] table[class=mainHeader] {
-        width: 320px !important;
-      }
-
-      body[class=media] img[class=saleImage],
-      body[class=media] table[class=excellentFor] {
-        width: 320px !important;
-      }
-
-      body[class=media] img[class=headerImage] {
-        padding-top: 0px !important;
-      }
-
-      body[class=media] td[class=headerTable] {
-        text-align: center !important;
-      }
-
-      body[class=media] td[class=headerTable] img {
-        margin: auto !important;
-      }
-
-      body[class=media] table[class=excellentFor] {
-        margin-left: 0px !important;
-        padding-left: 10px !important;
-      }
-
-      body[class=media] table[class=saleDetails] {
-        width: 313px !important;
-      }
-
-      body[class=media] td[class=imageHeight] {
-        height: auto !important;
-      }
-
-      body[class=media] table[class="button"] {
-        width: 108px !important;
-        padding-left: 11px !important;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        padding-right: 3px;
-      }
-
-      body[class=media] span[class="hideMobile"] {
-        display: none;
-      }
-
-      body[class=media] em[class="endsIn"] {
+      @media only screen and (max-width: 480px) {
+        body[class=media] td[class="viewSalesButton"] {
+        display:none;
+        }
+        *[class].mob-hide {  display:none !important;  }
+        *[class].mob-show {  display:block !important;  overflow:visible !important;  float:none !important;  width:100% !important;  height:auto !important;  max-height: none !important;  }
+        body[class=media] table[class="salesTable"], body[class=media] table[class="mainHeader"], body[class=media] table[class="preHeader"], body[class=media] table[class="sales"], body[class=media] table[class="footer"] {
+        width:320px;
+        }
+        body[class=media] table[class=sales] td[class=individualSale]{
+        display:block;
+        margin: auto;
+        }
+        body[class=media] *[class=spacer] {
+        height:0px;
         display: block;
+        }
+        body[class=media] table[class="repeatTable"] {
+        width:270px;
+        }
+        body[class=media] img[class=logo] {
+        width="120"
+        padding-left: 55px!important;
+        }
+        body[class=media] td[class=individualSale] {
+        display: block;
+        min-height:300px!important;
+        }
+        body[class=media] td[class=repeatSpacer] {
+        display: block;
+        min-height:100px!important;
+        }
+        body[class=media] img[class=saleImage] {
+        max-width: 320px!important;
+        }
+        body[class=media] table[class=saleDetails] {
+        max-width: 320px!important;
+        }
+        body[class=media] td[class=repeatSale] {
+        display:block;
+        margin: -100px;
+        }
+        body[class=media] img {
+        max-width: 320px!important;
+        }
+        body[class=media] p[class=destination] {
+        padding:25px!important;
+        }
+        body[class=media] td[class=repeatPadding] {
+        padding-top:5px!important;
+        }
+        body[class=media] div[class=mainTitle] {
+        font-size: 25px!important; line-height:25px!important;
+        }
+        body[class=media] div[class=otherTitle] {
+        font-size: 18px!important; line-height:20px!important;
+        }
       }
-
-      body[class=media] span[class="reminder"] {
-        display: none;
-      }
-
-      body[class=media] td[class="preHeader"] {
-        font-size: 10px !important;
-        -webkit-text-size-adjust: none;
-      }
-
-      body[class=media] td[class="preHeader"] {
-        font-size: 10px !important;
-        -webkit-text-size-adjust: none;
-      }
-
-      body[class=media] td[class="impulseButton"],
-      body[class=media] td[class="viewSalesButton"] {
-        display: none;
-      }
-
-      body[class=media] img {
-        max-width: 320px;
-      }
-
-      body[class=media] p[class=mainTitle] {
-        font-size: 26px !important;
-      }
-    }
-
-    /* More Specific Targeting */
-    @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-
+      /* More Specific Targeting */
+      @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
       /* ipad (tablets, smaller screens, etc) */
-      body[class=media] tr[class=nav],
-      body[class=media] td[class=social] {
-        display: none;
       }
-
-      body[class=media] table[class="button"] {
-        width: 108px !important;
-        padding-left: 11px !important;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        padding-right: 3px;
-      }
-    }
-
-    @media only screen and (-webkit-min-device-pixel-ratio: 2) {
+      @media only screen and (-webkit-min-device-pixel-ratio: 2) {
       /*iPhone 4g styles in here */
-    }
-
-    /***************************************************
+      }
+      html, body { margin:0; padding:0; }
+    </style>
+    <!-- Targeting Windows Mobile -->
+    <!--[if IEMobile 7]>
+    <style type="text/css">
+    </style>
+    <![endif]-->
+    <!-- ***********************************************
       ****************************************************
       END MOBILE TARGETING
-      */
-  </style>
-  <style>
-    /**************************
-            SUVC styles
-            */
-    .suvc-icon {
-      width: 40px;
-      min-width: 40px;
-      margin: 16px;
-      margin-top: 24px;
-      margin-right: 4px;
-      background-repeat: no-repeat;
-      background-size: contain;
-      display: none;
-    }
+      ****************************************************
+      ************************************************ -->
+    <!--[if gte mso 9]>
+    <style>
+      /* Target Outlook 2007 and 2010 */
+    </style>
+    <![endif]-->
+  </head>
+  <body class="media" style="margin:0px">
+    <custom name="opencounter" type="tracking">
+    <table class="mainContainer" align="center" bgcolor="#f3f3f4" cellpadding="0" cellspacing="0" width="100%" height="100%" style="margin:0px">
+      <tr>
+        <td>
+          <table class="salesTable" align="center" bgcolor="#ffffff" cellpadding="0" cellspacing="0" width="559">
+            <tr>
+              <td class="preHeaderContainer" bgcolor="#f3f3f4">
+                <table class="preHeader" align="center" bgcolor="#f3f3f4" cellpadding="0" cellspacing="0" width="559">
+                  <tr>
+                    <td class="viewSalesButton" align="right" style="color:#f3f3f4; padding-bottom: 14px; padding-top:5px; font-family:Arial,Helvetica,sans-serif; font-size: 12px;" valign="bottom">
+                       Herzlich willkommen bei {{applicationname}}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table class="salesTable" align="center" bgcolor="#ffffff" cellpadding="0" cellspacing="0" width="559" height="50px">
+                  <tr>
+                    <td height="50">
+                      <table class="mainHeader" width="559" height="50px" cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center">
+                        <tbody>
+                          <tr>
+                            <td align="center">
 
-    /* (SHARED_COST | SE_COST | HOTEL_COST) */
-    .vertical-bar {
-      display: none;
-      width: 4px;
-      min-width: 4px;
-      background: #EB0A0A;
-    }
+                               <img class="logo" style="border:none;padding:10px 10px 10px 10px;" alt="{{applicationname}}" src="{{headerlogo}}" />
 
-    .white-container {
-      display: flex;
-      border-radius: 2px;
-      overflow: hidden;
-      padding-right: 38px;
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr bgcolor="#ffffff">
+              <td style="font-family: georgia, arial, sans-serif; font-size: 28px; font-weight:300; color: #1a1a1a; text-align:center;line-height: 40px; padding-top:20px; padding-bottom:0px; padding-left:15px; padding-right:15px;" st-title="rightimage-title">
+                <div align="center">
 
-
-    }
-
-    .cancellation-desc {
-      padding-left: 18px;
-      padding-top: 11px;
-      padding-bottom: 5px;
-    }
-  </style>
-
-
-
-<!-- SUVC WAS ENEABLED AND CREATED -->
- <!-- %%[ if not empty(@vccCardNumber) and @cancellationStatus == 'CHARGED' then ]%% -->
-  <style>
-    .suvc-icon-img {
-      background-image: url(https://d1x3cbuht6sy0f.cloudfront.net/assets/images/icons/suvc-return-sum-icon.png);
-      display: block;
-    }
-
-    .vertical-bar {
-      display: block;
-      background: #00818F;
-    }
-
-    .white-container {
-      background: white;
-    }
-  </style>
-  {{/if}}
-
-
-
-
-  <!-- %%[ if not empty(@vccCardNumber) and @cancellationStatus == 'CANCELLED' and @cancellationCostType == 'SHARED_COST' then ]%% -->
-  <style>
-    .suvc-icon-img {
-      background-image: url(https://d1x3cbuht6sy0f.cloudfront.net/assets/images/icons/suvc-invalid-icon.png);
-      display: block;
-    }
-
-    .vertical-bar {
-      display: block;
-    }
-
-    .white-container {
-      background: white;
-    }
-  </style>
-  {{/if}}
-
-  <!-- %%[ if not empty(@vccCardNumber) and  (@cancellationCostType == 'SE_COST' or @cancellationType == 'CANCELLATION') then ]%% -->
-  <style>
-    .suvc-icon-img {
-      background-image: url(https://d1x3cbuht6sy0f.cloudfront.net/assets/images/icons/suvc-valid-icon.png);
-      display: block;
-    }
-
-    .vertical-bar {
-      display: block;
-      background: #00818F;
-    }
-
-    .white-container {
-      background: white;
-    }
-  </style>
-  {{/if}}
-
-  <!-- %%[ if not empty(@vccCardNumber) and  @cancellationStatus == 'CANCELLED' and @cancellationCostType == 'HOTEL_COST' then ]%% -->
-  <style>
-    .suvc-icon-img {
-      background-image: url(https://d1x3cbuht6sy0f.cloudfront.net/assets/images/icons/suvc-invalid-icon.png);
-      display: block;
-    }
-
-    .vertical-bar {
-      display: block;
-    }
-
-    .white-container {
-      background: white;
-    }
-  </style>
-  {{/if}}
-
-  <!-- end of suvc enabled section -->
-
-  <style type="text/css">
-    .nav a {
-      text-decoration: none;
-      color: #000000;
-    }
-
-    a:visited,
-    a:hover {
-      text-decoration: none;
-      color: #000000;
-    }
-  </style>
-  {{#if vccDetailsCss}}
-  <style>
-     {{vccDetailsCss}}
-  </style>
-  {{/if}}
-</head>
-
-<body class="media" align="center" bgcolor="#000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"
-  style="width:95%">
-  <table id="main-table" align="center" bgcolor="#000000" cellpadding="0" cellspacing="0" width="95%">
-    <tr>
-      <td class="whiteColor" bgcolor="#000000">
-        <table id="second-table" align="center" bgcolor="#000000" cellpadding="0" cellspacing="0" width="95%">
-          <tr>
-            <td class="whiteColor" bgcolor="#000000">
-              <table align="center" bgcolor="#ffffff" cellpadding="0" cellspacing="0" id="container"
-                style="overflow: hidden;" width="580">
-                <tr>
-                  <td class="description" align="center"
-                    style="background:#000000; color:#898989; padding:10px; font-family: Arial,Helvetica, sans-serif; font-size: 12px; "
-                    valign="top">
-                     A booking has been cancelled on {{applicationname}}
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center">
-                    <table cellpadding="0" cellspacing="0" id="header" width="550" border="0">
-                      <tr>
-                        <td>
-                          <table class="mainHeader" width="550" cellspacing="0" cellpadding="0" align="center">
-                            <tbody>
-                              <tr>
-                                <td class="headerTable" align="left" style="margin-left:0px; margin-top:0px;">
-                                   <a href="%%=RedirectTo(@currentSalesUrl)=%%">
-                                    <img class="headerImage" style="border:none; padding-left: 0px; padding-top:10px;"
-                                       alt="{{applicationname}}" src="{{headerlogo}}" />
-                                  </a>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="padding-left: 0px; padding-bottom: 10px; padding-top:15px;">
-                    <table width="555" cellspacing="0" cellpadding="0" class="saleDetails">
-                      <tbody>
+                   Herzlich willkommen bei {{applicationname}}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family: georgia, arial, sans-serif; font-size: 20px; font-weight:300; color: #999999; text-align:center;line-height: 23px; padding-top:0px; padding-bottom:10px; padding-left:15px; padding-right:15px; font-style:italic;" st-title="rightimage-title">
+                <div align="center">
+                  Bitte bestätigen Sie Ihre Anmeldung
+                </div>
+              </td>
+            </tr>
+            <tr class="viewSalesButton" width="500" align="center">
+              <td class="viewSalesButton" width="500"align="center" style="font-family:‘Helvetica Neue’,Helvetica,Arial;font-size:11px;line-height:19px;padding-top:0px">
+                 <table width="80%" cellspacing="0" cellpadding="0" align="center" style="border-bottom:1px solid {{salecalltoactiontextcolor}}">
+                  <tbody>
+                    <tr>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td width="100%" height="20"></td>
+            </tr>
+            <tr bgcolor="#ffffff">
+              <td valign="top" align="center" class="imageHeight" style="border-spacing:0px;" bgcolor="#ffffff">
+                <!-- MAIN IMAGE START -->
+                <table class="mob-hide" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="table-layout: fixed;" align="center">
+                  <tr>
+                    <td style="padding-bottom:20px;" valign="top">
+                      <table class="fluid-" cellpadding="0" cellspacing="0" border="0" align="center">
                         <tr>
-                          <td bgcolor="#eeeeee" align="center"
-                            style="padding-left: 0px; padding-top:5px; text-align:left">
-                            <table width="520" class="saleDetails">
-                              <tbody>
-                                <tr>
-                                  <td class="lessPadding"
-                                    style="text-align:left; padding-left: 10px; font-family: Georgia,'Times New Roman',Times,serif; font-size:13px;">
-                                    <p class="mainTitle" style="font-size:26px"><strong>Dear
-                                         {{suppliercontactperson}},</strong></p>
-                                    <p style="font-size:16px;">
-                                      <strong>Please note:</strong>
-                                    <p>
-                                      <!-- SUVC is enabled if cancellation cost type is not empty -->
-                                      {{#if cancellationCostType}}
-                                    <div class="white-container">
-                                      <div class="vertical-bar"></div>
-                                      <div class="suvc-icon suvc-icon-img"></div>
-                                      <div class="cancellation-desc">
-                                        {{/if}}
-
-                                        <!-- %%[ if @cancellationType == 'FULL' and @cancellationStatus == 'CHARGED' then ]%% -->
-                                        <p>The customer has requested a full refund for the booking described below.</p>
-                                        <p>As agreed by you and the Secret Escapes Customer Services team, we will issue
-                                          a full refund to the customer. Please use the card details provided below to
-                                           transfer back the full amount of the booking. %%[ if @cancellationCostType ==
-                                          'HOTEL_COST' then ]%% We will also be in touch with you to recover the
-                                          {{/if}}
-                                        <!-- %%[ else ]%% -->
-                                        <p>The booking described below has been cancelled. Please remove it from your
-                                          booking system.
-                                          <!-- %%[ if @cancellationType == 'FULL' then ]%% -->
-                                          <!-- %%[ if @cancellationCostType == 'HOTEL_COST' or  @cancellationCostType == 'SHARED_COST' then ]%% -->
-                                          The single use virtual card associated with this booking is no longer valid.
-                                          {{/if}}
-                                          {{/if}}
-                                        </p>
-                                        <!-- %%[ if @cancellationType == 'CANCELLATION' then ]%% -->
-                                        <p>This doesn't affect the payment for this reservation, please continue and charge the card as advised below.</p>
-                                        {{/if}}
-
-                                        <!-- %%[ if @cancellationType == 'FULL' then]%% -->
-                                        <!-- %%[ if @cancellationCostType == 'SE_COST' then ]%% -->
-                                        <p>Secret Escapes is covering the cost for this cancellation. Please proceed and
-                                          charge the single use virtual card as advised below.</p>
-                                        {{/if}}
-
-                                        <!-- %%[ if @cancellationCostType == 'HOTEL_COST' then ]%% -->
-                                        <p> As agreed by you and the Secret Escapes Customer Services team, we will be
-                                          in touch with you to recover the commission.</p>
-                                        {{/if}}
-                                        {{/if}}
-                                        {{/if}}
-
-
-                                        <p>Should you need to get in touch, please reply to this email or email direct
-                                          to:<a href="mailto:customersupport@secretescapes.com"
-                                            target="_top">customersupport@secretescapes.com</a></p>
-                                        <p>It will speed things up if you make sure to include the transaction number
-                                           {{transactionid}}
-                                          whenever you email Secret Escapes.</p>
-
-                                        <!-- %%[ if @cancellationStatus != 'CHARGED' or  @cancellationType == 'CANCELLATION' then ]%% -->
-                                        <p>For your reference, the details of the cancelled booking are displayed below.
-                                        </p>
-                                        {{/if}}
-
-                                        {{#if cancellationCostType}}
-
-                                      </div>
-                                    </div>
-                                    {{/if}}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td class="lessPadding"
-                                    style="text-align:left; padding-left: 10px; font-family: Georgia,'Times New Roman',Times,serif; font-size:13px;">
-
-                                    <p style="border-bottom:solid 1px #cccccc;padding-bottom:5px;font-size:16px;">
-                                      <strong>Booking Summary:</strong>
-                                    </p>
-                                    <p>
-                                       Customer Email: {{customeremailaddress}}<br />
-                                       Booking name: {{firstname}} {{surname}}<br />
-                                       Phone Number: {{telephonenumber}}<br />
-                                       Transaction ID: {{transactionid}} <br />
-                                      {{/if}}
-                                      {{#if departingfrom}}
-                                       Departing from: {{departingfrom}}<br />
-                                      {{/if}}
-                                      <br />
-                                       Hotel: {{hotelname}} <br /><br />
-                                      {{#if hoteladdress1}}
-                                       {{hoteladdress1}}<br />
-                                      {{/if}}
-                                      {{#if hoteladdress2}}
-                                       {{hoteladdress2}}<br />
-                                      {{/if}}
-                                      {{#if hoteladdress3}}
-                                       {{hoteladdress3}}<br />
-                                      {{/if}}
-                                      {{#if hoteladdress4}}
-                                       {{hoteladdress4}}<br />
-                                      {{/if}}
-                                      {{#if hoteladdress5}}
-                                       {{hoteladdress5}}<br />
-                                      {{/if}}
-                                      {{#if hotelcountry}}
-                                       {{hotelcountry}}<br />
-                                      {{/if}}
-                                      <br />
-                                       %%[ if @customersupportemail != 'null' and not empty(@customersupportemail) then
-                                      ]%%
-                                       Customer Support Email: {{customersupportemail}}<br />
-                                      {{/if}}
-                                      %%[ if @customersupporttel != 'null' and not empty(@customersupporttel) then ]%%
-                                       Customer Support Phone: {{customersupporttel}}<br />
-                                      {{/if}}
-                                    </p>
-                                    {{#if vccDetailsHtml}}
-                                     {{vccDetailsHtml}}
-                                    {{/if}}
-                                    <!-- %%[ if (not empty(@vccCardNumber)) and (empty(@vccDetailsHtml)) then ]%% -->
-                                    Single Use Virtual Card:<br />
-                                    <ul>
-                                       <li>Card number : {{vccCardNumber}} </li>
-                                       <li>Expiry Date : {{vccExpireDate}} </li>
-                                       <li>CVC Code : {{vccCvvNumber}} </li>
-                                       <li>Activation Date: {{vccActivationDate}} </li>
-                                       <li>Amount : {{vccAmount}} </li>
-                                       <li>Currency : {{vccOriginalCurrency}} </li>
-                                    </ul>
-                                    <br />
-                                    <ul type="circle">
-                                      <li>This is a single use card for the amount and currency listed above as per our
-                                        contract.</li>
-                                      <li>The card should be charged on the day of check in.</li>
-                                      <li>The payment amount is equal to the total sell rate minus Secret Escapes'
-                                        commission (and UK VAT as applicable).</li>
-                                      <li>Commission invoices will be sent on a monthly basis.</li>
-                                      <li>In the event of any issues when charging the card please contact the finance
-                                        team at <a
-                                          href='mailto:hotelvcc@secretescapes.com'>hotelvcc@secretescapes.com</a>.</li>
-                                    </ul>
-                                    <br />
-                                    {{/if}}
-
-                                    %%[if empty(@flightdetails) then]%%
-                                    <p>
-                                       Check-in: {{holidaystartdate}} <br />
-                                       Check-out: {{holidayenddate}} <br />
-                                       Duration: {{stayduration}} night<br />
-                                       Number of Rooms: {{purchaseqty}}<br /><br />
-                                    </p>
-                                    {{/if}}
-                                    {{#if flightdetails}}
-                                     <p>{{flightdetails}}</p>
-                                    {{/if}}
-                                    <p>
-                                       {{guestdetails}}<br /><br />
-                                      {{#if travellerdetails}}
-                                      <em>Travellers:</em></br>
-                                       {{travellerdetails}}<br /><br />
-                                      {{/if}}
-                                      {{#if customeraddress1}}
-                                      <em>Postal Address:</em></br>
-                                      {{/if}}
-                                      {{#if customeraddress1}}
-                                      Address Line 1:
-                                       {{customeraddress1}} <br />
-                                      {{/if}}
-                                      {{#if customeraddress2}}
-                                      Address Line 2:
-                                       {{customeraddress2}} <br />
-                                      {{/if}}
-                                      {{#if customercity}}
-                                      City:
-                                       {{customercity}} <br />
-                                      {{/if}}
-                                      {{#if customercountry}}
-                                      Country:
-                                       {{customercountry}} <br />
-                                      {{/if}}
-                                      {{#if customerpostcode}}
-                                      Post Code:
-                                       {{customerpostcode}} <br />
-                                      {{/if}}
-                                    </p>
-                                    <p>
-                                       {{packageprice}}
-                                    </p>
-                                    <p style="border-bottom:solid 1px #cccccc;padding-bottom:5px;font-size:16px;">
-                                      <strong>Sale Details, including cancellation policy:</strong>
-                                    </p>
-                                    <p>
-                                      {{#if refundclause12}}
-                                       {{refundclause12text}} <br />
-                                      {{/if}}
-                                    </p>
-                                    <p>
-                                       {{producttitle}}<br />
-                                       {{saledescription}}<br />
-                                    </p>
-                                    {{#if atolapplicable}}
-                                    <p>
-                                      Please click here to print your ATOL Certificate. This is an important document,
-                                      so please keep it safe and take it with you whilst you are on holiday.
-                                      <br />
-                                       <a href="%%=RedirectTo(@atollink)=%%">View ATOL Certificate</a>
-                                      </br></br>
-                                    </p>
-                                    {{/if}}
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
+                          <td><img class="fluid-" src="http://image.email.secretescapes.com/lib/fe90127277660c7b70/m/2/LiguriaBanner.jpg" style="display:block" width="559"  border="0" alt="JETZT ANMELDUNG BESTÄTIGEN" title="JETZT ANMELDUNG BESTÄTIGEN" /></td>
                         </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="whiteColor" align="left">
-                    <table style="background:#000000;" cellpadding="0" cellspacing="0" class="footer" width="580">
-                      <tr>
-                        <td class="whiteColor" align="left"
-                          style="font-family: Arial,Helvetica, sans-serif; font-size:11px; color:#898989;">
-                          <p>
-                             If you need to get in contact, please email us at {{support_email}} or give us a call
-                             on {{support_number}}<br /><br />
-                             This email was sent to {{email}}<br /><br />
-                            Secret Escapes Ltd a company registered in England & Wales under number 07026107, registered
-                             office 120 Holborn, London, EC1N 2TD. © Secret Escapes %%=DatePart(Now(),'year')=%%
-                          </p>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-  <custom name="opencounter" type="tracking">
-</body>
-
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+                <!-- DESKTOP --><!-- MOBILE --><!--[if !mso]><!-->
+                <table class="mob-show" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="table-layout: fixed; display:none; max-height:0; mso-hide:all; overflow:hidden;" align="center">
+                  <tr style="width:0; overflow:hidden; float:left; display:none; max-height:0px; mso-hide:all;" class="mob-show">
+                    <td style="padding-bottom:20px;" valign="top">
+                      <table class="fluid-" cellpadding="0" cellspacing="0" border="0" align="center">
+                        <tr>
+                          <td><img class="fluid-" src="http://image.email.secretescapes.com/lib/fe91127277660c7b71/m/2/welDay7_hero_mob.png" style="display:block" width="640"  border="0" alt="JETZT ANMELDUNG BESTÄTIGEN" title="JETZT ANMELDUNG BESTÄTIGEN" /></td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+                <!--<![endif]--><!-- MOBILE -->
+                <!-- MAIN IMAGE END -->
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family: arial, sans-serif; font-size: 15px; color: #868B8C; padding-top: 10px; padding-bottom: 0px; padding-left: 25px; padding-right: 25px; text-align:center;line-height: 20px;" st-content="fulltext-paragraph">
+                Fast geschafft: gleich erhalten Sie Zugang zu über 100 ausgewählten Angeboten für exklusive Hotels und Luxusreisen.
+                <br/><br/>
+              </td>
+            </tr>
+            <tr>
+              <td valign="bottom" align="center" style="padding-bottom: 5px;padding-top: 5px;">
+                 <table width="300" cellspacing="0" cellpadding="0" bgcolor="{{salecalltoactiontextcolor}}" style="padding-top: 3px; padding-bottom: 3px;text-align:center;">
+                  <tbody>
+                    <tr>
+                      <td>
+                         <a style="line-height:36px; width:320px; color: {{salebuttontextcolor}}; text-decoration: none; font-family: Arial,Helvetica, sans-serif; font-size: 17px;" href="{{activationLink}}">
+                        JETZT ANMELDUNG BESTÄTIGEN</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td width="100%" height="20"></td>
+            </tr>
+            <tr>
+               <td style="font-family: georgia, arial, sans-serif; font-size: 22px; color:{{salecalltoactiontextcolor}}; text-align: left; line-height: 24px; padding-top:25px; padding-bottom: 10px; padding-left:15px; padding-right:15px; font-style: italic;" st-title="rightimage-title">
+                <div align="center">
+                  Aller guten Gründe sind drei:
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family: arial, sans-serif; font-size: 15px; color: #868B8C; padding-top: 0px; padding-bottom: 20px; padding-left: 25px; padding-right: 25px; text-align:left;line-height: 20px;" st-content="fulltext-paragraph">
+                <ul>
+                  <li>Exklusive Angebote für handverlesene Hotels und Reisen</li>
+                  <li>Bis zu 70% Preisnachlass, den Sie anderswo nicht finden</li>
+                  <li>Zusätzliche schöne Extras wie Spa-Zugang, Sekt und vieles mehr</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-family: Georgia,'Times New Roman',Times,serif; font-size: 14px; padding-top:10px; padding-left:15px; padding-right:10px; padding-bottom:20px;text-align:center;">
+                <p style="margin-bottom:0;">
+                  Liebe Gr&uuml;βe,
+                </p>
+                 <p style="font-family: Georgia,'Times New Roman',Times,serif; font-size:18px; margin-bottom:0px;margin-top:10px">{{applicationname}}</p>
+              </td>
+            </tr>
+            <tr>
+              <td align="left">
+                <table style="background:#f3f3f4;" cellpadding="0" cellspacing="0" class="footer" width="559">
+                  <tr>
+                    <td align="center" style="font-family:Arial,Helvetica,sans-serif; line-height:18px; font-size:11px; color: rgb(153, 153, 153);">
+                      <p>
+                        <!-- %%[ if @applicationname != 'Secret Escapes' then ]%% -->
+                         {{applicationname}} wird von Secret Escapes Ltd betrieben und vermittelt exklusive Reise- und Hotelangebote von den zugehörigen Reiseveranstaltern/ -anbietern.
+                        <br/><br/>
+                        {{/if}}
+                         Wenn Sie auf unsere E-Mails klicken, werden Sie bei {{applicationname}} eingeloggt. Um uns zu kontaktieren, senden Sie uns bitte eine E-Mail an {{supportemail}} oder rufen Sie uns unter +49 (0)30 221 53 18 30 an.
+                        <br/><br/>
+                         Diese E-Mail wurde an {{email}} gesendet.<br/><br/>
+                        Secret Escapes
+                        120 Holborn
+                        EC1N 2TD
+                        England & Wales Company No. 07026107
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
 </html>

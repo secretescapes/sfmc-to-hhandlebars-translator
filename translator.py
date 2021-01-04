@@ -9,6 +9,9 @@ class Translator:
     sfmc_variable_start_regex = re.escape(r'%%=v(@')
     sfmc_variable_end_regex = re.escape(')=%%')
 
+    sfmc_redirect_start_regex = re.escape(r'%%=RedirectTo(@')
+    sfmc_redirect_end_regex = re.escape(')=%%')
+
     def contains_sfmc_line(self, line):
         return "%%=" in line or "%%[" in line
 
@@ -37,9 +40,24 @@ class Translator:
             return translated_variable, True
         return word, False
 
+    def translate_redirect(self, word):
+        content = self.__extract_sfmc_redirect(word)
+        if content is not None:
+            content = content.group(1)
+            to_replace = '%%=RedirectTo(@' + content + ')=%%'
+            new_content = "{{" + content + "}}"
+            translated_variable = word.replace(to_replace, new_content)
+            return translated_variable, True
+        return word, False
+
     def __extract_sfmc_variable(self, word):
         start = self.sfmc_variable_start_regex
         end = self.sfmc_variable_end_regex
+        return re.search(start + '(.*?)' + end, word)
+
+    def __extract_sfmc_redirect(self, word):
+        start = self.sfmc_redirect_start_regex
+        end = self.sfmc_redirect_end_regex
         return re.search(start + '(.*?)' + end, word)
 
     def __get_if_condition_line(self, line):
@@ -51,7 +69,6 @@ class Translator:
     def __has_simple_if_condition(self, if_condition):
         return "if" in if_condition and \
                ("and" not in if_condition and "or" not in if_condition and "endif" not in if_condition)
-
 
     def __has_simple_checks(self, if_condition):
         return "!= 'null'" in if_condition or "not empty" in if_condition or "== 'true'" in if_condition

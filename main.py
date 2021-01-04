@@ -1,6 +1,7 @@
 import re
 from translator import Translator
 
+
 def translate():
     input_file_name = "input.txt"
     output_file_name = "output.txt"
@@ -20,6 +21,10 @@ def translate():
                     for word in words:
                         if is_sfmc_variable(word) is True:
                             variable, translated = translator.translate_variables(word)
+                            # if not translated. save to not translated file
+                            new_line = new_line + " " + variable
+                        elif is_sfmc_redirect(word) is True:
+                            variable, translated = translator.translate_redirect(word)
                             # if not translated. save to not translated file
                             new_line = new_line + " " + variable
                         else:
@@ -55,3 +60,7 @@ def get_if_condition_line(line):
 
 def is_sfmc_variable(word):
     return "%%=v(@" in word
+
+
+def is_sfmc_redirect(word):
+    return "%%=RedirectTo" in word

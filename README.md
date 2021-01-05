@@ -4,7 +4,7 @@ It's work in progress and it just translates a subset of the SFMC keywords.
 
 ####Translates:
 * SFMC variables
-* Single if conditions without "and" or "or" operators.
+* Single if conditions without "and" or "or" operators. (supports translating to `unless`)
 * Specific SFMC reserved keywords like "RedirectTo"  
 
 ####Does not Translate:

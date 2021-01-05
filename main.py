@@ -1,8 +1,8 @@
 import re
 from translator import Translator
 
-translated_file = open("translated_values.txt", "w")
-not_translated_file = open("not_translated.txt", "w")
+translated_file = open("translated_values.txt", "w+")
+not_translated_file = open("not_translated.txt", "w+")
 
 
 def main():
@@ -10,7 +10,7 @@ def main():
     output_file_name = "output.txt"
 
     translator = Translator()
-    with open(input_file_name) as inputFile, open(output_file_name, "w") as outputFile:
+    with open(input_file_name) as inputFile, open(output_file_name, "w+") as outputFile:
         for line in inputFile:
             indentation = line[:-len(line.lstrip())]
             if translator.contains_sfmc_line(line) is True:

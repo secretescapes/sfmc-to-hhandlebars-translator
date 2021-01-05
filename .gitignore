@@ -1,2 +1,8 @@
 venv/*
 .idea/
+
+# excluding text files
+input.txt
+not_translated.txt
+output.txt
+translated_values.txt

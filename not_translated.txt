@@ -1,8 +1,0 @@
-%%[if empty(@flightdetails) then]%%  >>>>  %%[if empty(@flightdetails) then]%%
-
-%%[if empty(@guestdetails) then]%%  >>>>  %%[if empty(@guestdetails) then]%%
-
-%%[if empty(@postaladdress) then]%%  >>>>  %%[if empty(@postaladdress) then]%%
-
-%%[if empty(@postaladdress) then]%%  >>>>  %%[if empty(@postaladdress) then]%%
-

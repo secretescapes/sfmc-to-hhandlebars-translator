@@ -38,7 +38,7 @@ class Translator:
         if content is not None:
             content = content.group(1)
             to_replace = '%%=v(@' + content + ')=%%'
-            new_content = "{{" + content + "}}"
+            new_content = "{{{" + content + "}}}"
             translated_variable = word.replace(to_replace, new_content)
             return translated_variable, True
         return word, False
@@ -75,4 +75,4 @@ class Translator:
                ("and" not in if_condition and "or" not in if_condition and "endif" not in if_condition)
 
     def __has_simple_checks(self, if_condition):
-        return "!= 'null'" in if_condition or "not empty" in if_condition or "== 'true'" in if_condition
+        return "!= 'null'" in if_condition or "not empty" in if_condition or "== 'true'" in if_condition or "!= ''" in if_condition

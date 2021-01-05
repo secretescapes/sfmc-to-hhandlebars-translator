@@ -5,7 +5,7 @@ translated_file = open("translated_values.txt", "w")
 not_translated_file = open("not_translated.txt", "w")
 
 
-def translate():
+def main():
     input_file_name = "input.txt"
     output_file_name = "output.txt"
 
@@ -34,6 +34,9 @@ def translate():
                             # log to translated or not translated file
                             log_translation(word, translation, translated)
                             new_line = new_line + " " + translation
+                        elif translator.contains_sfmc_line(word):  # unrecognised SFMC keyword
+                            # log to translated or not translated file
+                            log_translation(word, word, False)
                         else:
                             new_line = new_line + " " + word
                 outputFile.write(indentation + new_line)
@@ -81,6 +84,10 @@ def log_translation(original, translation, is_translated):
         translated_file.write('\n')
         translated_file.write('\n')
     else:
-        not_translated_file.write(original + "  >>>>  " + translation)
+        not_translated_file.write(original)
         not_translated_file.write('\n')
         not_translated_file.write('\n')
+
+
+if __name__ == "__main__":
+    main()

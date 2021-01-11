@@ -1,25 +1,29 @@
 import re
 
-
 class Translator:
 
-    sfmc_expression_start_regex = re.escape(r'%%[')
-    sfmc_expression_end_regex = re.escape(']%%')
+    SFMC_TAGS_TO_IGNORE = ["<custom name=\"opencounter\" type=\"tracking\">"]
 
-    sfmc_variable_start_regex = re.escape(r'%%=v(@')
-    sfmc_variable_end_regex = re.escape(')=%%')
+    SFMC_EXPRESSION_START_REGEX = re.escape(r'%%[')
+    SFMC_EXPRESSION_END_REGEX = re.escape(']%%')
 
-    sfmc_redirect_start_regex = re.escape(r'%%=RedirectTo(@')
-    sfmc_redirect_end_regex = re.escape(')=%%')
+    SFMC_VARIABLE_START_REGEX = re.escape(r'%%=v(@')
+    SFMC_VARIABLE_END_REGEX = re.escape(')=%%')
+
+    SFMC_REDIRECT_START_REGEX = re.escape(r'%%=RedirectTo(@')
+    SFMC_REDIRECT_END_REGEX = re.escape(')=%%')
 
     # stack to store if conditions and unless conditions
     # to know whether to translate to '{{/if}} or {{/unless}}
     if_condition_stack = []
 
-    def contains_sfmc_line(self, line):
+    def contains_sfmc_line(self, line: str) -> bool:
         return "%%=" in line or "%%[" in line
 
-    def translate_if_condition(self, line):
+    def contains_sfmc_line_to_ignore(self, line: str) -> bool:
+        return line in self.SFMC_TAGS_TO_IGNORE
+
+    def translate_if_condition(self, line: str) -> tuple:
         if_condition = self.__get_if_condition_line(line)
         if self.__has_simple_if_condition(if_condition):  # does not have any 'and' or 'or' operators
             if self.__has_unless_format(if_condition):
@@ -52,7 +56,7 @@ class Translator:
             self.if_condition_stack.append(line)
             return line, False
 
-    def translate_variables(self, word):
+    def translate_variables(self, word: str) -> tuple:
         content = self.__extract_sfmc_variable(word)
         if content is not None:
             content = content.group(1)
@@ -62,7 +66,7 @@ class Translator:
             return translated_variable, True
         return word, False
 
-    def translate_redirect(self, word):
+    def translate_redirect(self, word: str) -> tuple:
         content = self.__extract_sfmc_redirect(word)
         if content is not None:
             content = content.group(1)
@@ -72,29 +76,29 @@ class Translator:
             return translated_variable, True
         return word, False
 
-    def __extract_sfmc_variable(self, word):
-        start = self.sfmc_variable_start_regex
-        end = self.sfmc_variable_end_regex
+    def __extract_sfmc_variable(self, word: str):
+        start = self.SFMC_VARIABLE_START_REGEX
+        end = self.SFMC_VARIABLE_END_REGEX
         return re.search(start + '(.*?)' + end, word)
 
     def __extract_sfmc_redirect(self, word):
-        start = self.sfmc_redirect_start_regex
-        end = self.sfmc_redirect_end_regex
+        start = self.SFMC_REDIRECT_START_REGEX
+        end = self.SFMC_REDIRECT_END_REGEX
         return re.search(start + '(.*?)' + end, word)
 
     def __get_if_condition_line(self, line):
-        start = self.sfmc_expression_start_regex
-        end = self.sfmc_expression_end_regex
+        start = self.SFMC_EXPRESSION_START_REGEX
+        end = self.SFMC_EXPRESSION_END_REGEX
         if_condition = re.search(start + '(.*?)' + end, line)
         return if_condition.group(1)
 
-    def __has_simple_if_condition(self, if_condition):
+    def __has_simple_if_condition(self, if_condition: str) -> bool:
         if_condition = if_condition.split()
         return "if" in if_condition and \
                ("and" not in if_condition and "or" not in if_condition and "endif" not in if_condition)
 
-    def __has_simple_checks(self, if_condition):
+    def __has_simple_checks(self, if_condition: str) -> bool:
         return "!= 'null'" in if_condition or "not empty" in if_condition or "== 'true'" in if_condition or "!= ''" in if_condition
 
-    def __has_unless_format(self, if_condition):
+    def __has_unless_format(self, if_condition: str) -> bool:
         return ("empty" in if_condition and "not empty" not in if_condition) or "== null" in if_condition or "== 'false'" in if_condition

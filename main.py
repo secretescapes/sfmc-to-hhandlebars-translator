@@ -8,11 +8,12 @@ not_translated_file = open("not_translated.txt", "w+")
 def main():
     input_file_name = "input.txt"
     output_file_name = "output.txt"
-
     translator = Translator()
     with open(input_file_name) as inputFile, open(output_file_name, "w+") as outputFile:
         for line in inputFile:
             indentation = line[:-len(line.lstrip())]
+            if translator.contains_sfmc_line_to_ignore(line.strip()) is True:
+                continue
             if translator.contains_sfmc_line(line) is True:
                 line = line.strip()
                 if is_if_condition(line) is True:
